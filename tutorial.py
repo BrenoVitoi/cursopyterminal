@@ -25,5 +25,22 @@ class Manager:
     def terminate(self):
         pass
 
-    def add(self):
-        pass
+    def menu(self):
+        os.system("cls")
+        print("-------------Menu----------------")
+        print("1 :) add")
+
+        print("2 :) Remove")
+
+        print("3 :) Update")
+
+        print("4 :) List")
+
+        print("5 :) Terminate")
+
+    def main(self):
+        self.menu()
+
+
+contacts_manager = Manager()
+contacts_manager.main()
