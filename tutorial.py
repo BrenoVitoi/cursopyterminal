@@ -11,7 +11,32 @@ class Manager:
         self.address = ""
 
     def add(self):
-        pass
+        running = True
+        while running:
+            os.system("cls")
+            print("-------------ADICIONE UM NOVO CONTATO-------------")
+            print()
+            self.name = input("Name :")
+            time.sleep(0.20)
+            self.phone = input("Phone :")
+            time.sleep(0.20)
+            self.address = input("Address :")
+            db = sqlite3.connect("connection")
+            cursor = db.cursor()
+            cursor.execute(""" INSERT INTO contacts\
+                            (Name, Phone, Address)VALUES(?,?,?)""",
+                           (self.name, self.phone, self.address))
+
+            db.commit()
+            add_more = input("DESEJA ADICIONAR OUTRO CONTATO ? (Y/N) :")
+            if add_more == "y".lower():
+                continue
+            else:
+                db.close()
+                running = False
+                print("SAINDO DO MENU")
+                time.sleep(2)
+                self.menu()
 
     def update(self):
         pass
@@ -88,7 +113,7 @@ class Manager:
 
             cursor = db.cursor()
             cursor.execute("""CREATE TABLE contacts
-                            (NAME TEXT, Phone TEXT, AdressTEXT)""")
+                            (Name TEXT, Phone TEXT, Address TEXT)""")
 
             winsound.Beep(2000, 50)
             print()
