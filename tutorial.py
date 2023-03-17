@@ -85,6 +85,11 @@ class Manager:
             print("CRIANDO NOVA CONEXAO COM O BANCO DE DADO")
             time.sleep(3)
             db = sqlite3.connect("connection")
+
+            cursor = db.cursor()
+            cursor.execute("""CREATE TABLE contacts
+                            (NAME TEXT, Phone TEXT, AdressTEXT)""")
+
             winsound.Beep(2000, 50)
             print()
 
