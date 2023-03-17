@@ -45,7 +45,17 @@ class Manager:
         pass
 
     def get_list(self):
-        pass
+        count = 0
+        count_2 = 0
+        db = sqlite3.connect("connection")
+        cursor = db.cursor()
+        os.system("cls")
+        print("-------------CONTATOS--------------")
+        time.sleep(0.50)
+        cursor.execute("SELECT Name, Phone, Address FROM contacts")
+        results = cursor.fetchall()
+        print(results)
+        time.sleep(0.100)
 
     def terminate(self):
         pass
