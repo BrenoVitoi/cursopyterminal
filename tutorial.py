@@ -16,19 +16,33 @@ class Manager:
             os.system("cls")
             print("-------------ADICIONE UM NOVO CONTATO-------------")
             print()
-            self.name = input("Name :")
+
+            db = sqlite3.connect("connection")
+            cursor = db.cursor()
+
+            temp_name = input("Name: ")
+            cursor.execute("SELECT Name FROM contacts")
+            results = cursor.fetchall()
+            for i in results:
+                if temp_name in i:
+                    print("ESTE CONTATO JA EXISTE NO NOSSO BANCO DE DADOS")
+                    time.sleep(3)
+                    self.add()
+            self.name = temp_name
+            temp_name = ""
+
             time.sleep(0.20)
             self.phone = input("Phone :")
             time.sleep(0.20)
             self.address = input("Address :")
-            db = sqlite3.connect("connection")
-            cursor = db.cursor()
+
             cursor.execute(""" INSERT INTO contacts\
                             (Name, Phone, Address)VALUES(?,?,?)""",
                            (self.name, self.phone, self.address))
 
             db.commit()
-            add_more = input("DESEJA ADICIONAR OUTRO CONTATO ? (Y/N) :")
+            add_more = input(
+                "DESEJA ADICIONAR OUTRO CONTATO ? (Y/N) :")
             if add_more == "y".lower():
                 continue
             else:
@@ -51,11 +65,33 @@ class Manager:
         cursor = db.cursor()
         os.system("cls")
         print("-------------CONTATOS--------------")
+
         time.sleep(0.50)
         cursor.execute("SELECT Name, Phone, Address FROM contacts")
         results = cursor.fetchall()
-        print(results)
-        time.sleep(0.100)
+        for row in results:
+            time.sleep(0.50)
+            count += 1
+            count_2 += 1
+            print(count_2, row)
+            if count == 5:
+                input("PRECIONE QUALQUER TECLA PARA CONTINUAR")
+                count = 0
+                print()
+            print()
+            print("FINAL DOS RESULTADOS")
+            print()
+            print("PRECIONE QUALQUER TECLA PARA CONTINUAR")
+            option = input(
+                "APERTE (A) PARA ATUALIZA, D PARA DELETAR M PARA MENU :")
+            if option == "a".lower():
+                self.update()
+
+            elif option == "d".lower():
+                self.remove()
+
+            elif option == "m".lower():
+                self.menu()
 
     def terminate(self):
         pass
