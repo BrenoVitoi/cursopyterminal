@@ -15,42 +15,52 @@ class Manager:
         while running:
             os.system("cls")
             print("-------------ADICIONE UM NOVO CONTATO-------------")
+            print("PRECIONE A TECLA SHIFT + Q PARA CANCELAR")
             print()
 
-            db = sqlite3.connect("connection")
-            cursor = db.cursor()
-
             temp_name = input("Name: ")
-            cursor.execute("SELECT Name FROM contacts")
-            results = cursor.fetchall()
-            for i in results:
-                if temp_name in i:
-                    print("ESTE CONTATO JA EXISTE NO NOSSO BANCO DE DADOS")
-                    time.sleep(3)
-                    self.add()
-            self.name = temp_name
-            temp_name = ""
+            if len(temp_name) != 0 and temp_name != "Q".upper():
+                db = sqlite3.connect("connection")
+                cursor = db.cursor()
+                cursor.execute("SELECT Name FROM contacts")
+                results = cursor.fetchall()
+                for i in results:
+                    if temp_name in i:
+                        print("ESTE CONTATO JA EXISTE NO NOSSO BANCO DE DADOS")
+                        time.sleep(3)
+                        self.add()
+                self.name = temp_name
+                temp_name = ""
 
-            time.sleep(0.20)
-            self.phone = input("Phone :")
-            time.sleep(0.20)
-            self.address = input("Address :")
+                time.sleep(0.20)
+                self.phone = input("Phone :")
+                time.sleep(0.20)
+                self.address = input("Address :")
 
-            cursor.execute(""" INSERT INTO contacts\
-                            (Name, Phone, Address)VALUES(?,?,?)""",
-                           (self.name, self.phone, self.address))
+                cursor.execute(""" INSERT INTO contacts\
+                                (Name, Phone, Address)VALUES(?,?,?)""",
+                               (self.name, self.phone, self.address))
 
-            db.commit()
-            add_more = input(
-                "DESEJA ADICIONAR OUTRO CONTATO ? (Y/N) :")
-            if add_more == "y".lower():
-                continue
-            else:
-                db.close()
-                running = False
-                print("SAINDO DO MENU")
+                db.commit()
+                add_more = input(
+                    "DESEJA ADICIONAR OUTRO CONTATO ? (Y/N) :")
+                if add_more == "y".lower():
+                    continue
+                else:
+                    db.close()
+                    running = False
+                    print("SAINDO DO MENU")
+                    time.sleep(2)
+                    self.menu()
+            elif temp_name == "Q".upper():
+                print("SAINDO DO MENU PRINCIPAL")
                 time.sleep(2)
                 self.menu()
+            else:
+                winsound.Beep(3000, 100)
+                winsound.Beep(3000, 100)
+                print("FAVOR PREENCHER TODOS OS CAMPOS ")
+                time.sleep(3)
 
     def update(self):
         pass
